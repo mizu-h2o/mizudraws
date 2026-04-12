@@ -1,0 +1,979 @@
+/* Reset & Typography */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+    /* Base Styles */
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+    background-color: #fafafa;
+    color: #333;
+    
+    /* Layout Fixes (Prevents spasms and zooming) */
+    overflow-x: hidden; 
+    overflow-y: scroll; 
+    
+    /* The Fade-in Trigger */
+    animation: fadeIn 0.4s ease-in; 
+}
+
+/* The Fade-In Animation Keyframes */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* ========================================= */
+/* MASTER HEADER & NAVIGATION                */
+/* ========================================= */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background: #fafafa;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box; /* Keeps the padding inside the 100% width */
+}
+
+.logo img {
+    max-height: 45px; 
+    width: auto;
+    display: block;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Replaces 'gap' with bulletproof margins */
+nav ul > li {
+    margin-left: 2rem; 
+}
+
+/* Removes the margin from the very first item so it aligns perfectly */
+nav ul > li:first-child {
+    margin-left: 0;
+}
+
+nav a {
+    font-family: 'Roboto Condensed', sans-serif;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-decoration: none;
+    color: #222;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    white-space: nowrap; /* THE FIX: Forces links to never squish or stack */
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #888;
+}
+
+/* Hero Section */
+.editorial-hero {
+    padding: 1rem 5% 3rem 5%;
+    /* Forces the section to be exactly the height of the screen, minus ~100px for your header */
+    height: calc(100vh - 100px); 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers the whole block vertically on the screen */
+    background-color: #f4f4f4; 
+}
+
+/* The Massive 'MIZUDRAWS' Text */
+.massive-title {
+    font-size: 13.5vw; /* Slightly smaller to prevent any horizontal scrollbars */
+    font-weight: 700;
+    line-height: 0.8;
+    margin-bottom: 4vh; /* Uses screen height for bottom margin so it scales! */
+    letter-spacing: -3px;
+    color: #222;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* The Split Layout Container */
+.hero-split {
+    display: flex;
+    gap: 4rem; 
+    align-items: center; 
+    
+    /* NEW RULES TO ALIGN WITH THE TITLE */
+    width: 78%; /* Constrains the width to match the text */
+    margin: 0 auto; /* Centers this box perfectly under the title */
+}
+
+/* Left Side: 3D Stage */
+.hero-image {
+    flex: 1; 
+    display: flex;
+    justify-content: flex-start; 
+    perspective: 1200px; 
+}
+
+/* The Book Wrapper */
+.book-container {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    transform-style: preserve-3d;
+}
+
+/* The Physical Cover Wrapper */
+.book-cover {
+    position: relative;
+    z-index: 2;
+    transform-origin: right center; /* Hinge on the right */
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+    transform-style: preserve-3d; /* CRITICAL: Tells the browser this is a 3D object with layers */
+}
+
+/* Shared settings for both the front and back faces */
+.cover-front, 
+.cover-back {
+    backface-visibility: hidden; /* Hides the back of the layer when it flips past 90 degrees */
+    -webkit-backface-visibility: hidden; /* Ensures it works on Apple Safari */
+}
+
+/* Front Face: The Image Layer */
+.cover-front {
+    position: relative;
+}
+
+.cover-front img {
+    width: auto; 
+    max-width: 100%; 
+    max-height: 45vh; 
+    display: block;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+}
+
+/* Back Face: The Inside Cover */
+.cover-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #111; /* Sleek black/dark grey */
+    transform: rotateY(180deg); /* Pre-flips this layer so it faces backward toward the menu */
+    box-shadow: inset 10px 0 20px rgba(0,0,0,0.5); /* Optional: Adds a subtle shadow near the spine to look like real binding */
+}
+
+/* The Image Sizing (This is what broke!) */
+.book-cover img {
+    width: auto; 
+    max-width: 100%; 
+    max-height: 45vh; /* Keeps it perfectly sized to the screen */
+    display: block;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+}
+
+/* The Inside Menu */
+.book-inside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    box-shadow: inset -5px 0 10px rgba(0,0,0,0.05); 
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+.book-inside ul {
+    list-style: none;
+    padding: 0;
+}
+
+.book-inside a {
+    font-family: 'Roboto Condensed', sans-serif;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #222;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+    text-align: center;
+}
+
+.book-inside a:hover {
+    color: #888;
+}
+
+/* The Trigger Class (Swings open to the right) */
+.book-container.open .book-cover {
+    transform: rotateY(135deg); /* Positive degree swings it right */
+}
+
+/* Right Side: Text */
+.hero-text {
+    flex: 1; 
+    text-align: right; 
+}
+
+.hero-text h2 {
+    font-size: 3.5vw; 
+    font-weight: 700; 
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px; 
+    color: #222;
+}
+
+/* The 'by MIZU' Link (Leave this exactly as you have it) */
+.hero-author-link {
+    display: inline-block;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #222;
+    text-decoration: none;
+    border-bottom: 2px solid #222; 
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.hero-author-link:hover {
+    color: #888;
+    border-bottom-color: #888;
+}
+
+/* Mobile Responsiveness (Stacks them on small screens) */
+@media (max-width: 768px) {
+    .hero-split {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .massive-title {
+        font-size: 18vw;
+        letter-spacing: -1px;
+    }
+    
+    .hero-text {
+        text-align: center; /* Centers text on cell phones */
+    }
+    
+    .hero-text h2 {
+        font-size: 2.5rem;
+    }
+}
+
+.btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #222;
+    color: #fff;
+    text-decoration: none;
+    
+    /* Font Updates Here */
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700; /* Makes it bold */
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 2px; /* Spaces the letters out slightly */
+    
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #555;
+}
+
+/* ========================================= */
+/* SERVICES SECTION                          */
+/* ========================================= */
+
+.services-grid {
+    display: flex;
+    gap: 2rem; /* Adds nice spacing between the cards */
+    justify-content: center;
+    align-items: stretch; /* Forces all three cards to be the exact same height */
+    margin-top: 2rem;
+}
+
+.service-card {
+    flex: 1; /* This is the magic rule that makes all three sections equal in width */
+    background: #fafafa;
+    border: 1px solid #eaeaea;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
+/* A sleek hover effect so the cards lift slightly when hovered */
+.service-card:hover {
+    transform: translateY(-5px); 
+}
+
+.service-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    text-align: center;
+    border-bottom: 2px solid #222;
+    padding-bottom: 1rem;
+}
+
+.service-card ul {
+    list-style: none; /* Removes the default ugly bullet points */
+    padding: 0;
+    margin: 0 0 2rem 0;
+    flex-grow: 1; /* This pushes the Inquire button perfectly to the bottom, even if one list is longer than another! */
+}
+
+.service-card li {
+    margin-bottom: 1.2rem;
+    font-weight: 700; /* BOLDER for maximum readability */
+    font-size: 1.05rem;
+    color: #222;
+    position: relative;
+    padding-left: 1.5rem;
+    line-height: 1.4;
+}
+
+/* Custom sleek bullet points */
+.service-card li::before {
+    content: "■";
+    position: absolute;
+    left: 0;
+    color: #888;
+    font-size: 0.8rem;
+    top: 4px;
+}
+
+.service-card .btn {
+    text-align: center;
+    margin-top: auto; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Mobile Responsiveness: Stacks them vertically on small phone screens */
+@media (max-width: 768px) {
+    .services-grid {
+        flex-direction: column;
+    }
+}
+
+/* Gallery & Testimonials Grid */
+.gallery {
+    padding: 0 5% 5rem 5%;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.gallery-grid img:hover {
+    transform: translateY(-5px);
+}
+
+/* ========================================= */
+/* TESTIMONIALS EDITORIAL LAYOUT             */
+/* ========================================= */
+
+.testimonials-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8rem; /* Massive spacing between the two reviews so they breathe */
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+/* The standard row (Image Left, Text Right) */
+.testimonial-row {
+    display: flex;
+    align-items: center; /* Vertically centers the text alongside the image */
+    gap: 4rem; /* Spacing between the image and the text */
+    text-align: left;
+}
+
+/* The magic class that flips the second row (Text Left, Image Right) */
+.testimonial-row.reverse {
+    flex-direction: row-reverse;
+}
+
+/* STRICT IMAGE CONSTRAINTS */
+.test-img {
+    flex: 1; 
+    max-width: 45%; /* Ensures the image never takes up more than half the screen */
+}
+
+.test-img img {
+    width: 100%;
+    height: 550px; /* THE LOCK: Forces every single image to be exactly 550px tall */
+    object-fit: cover; /* THE MAGIC: Crops the image beautifully inside the box so it never squishes */
+    display: block;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1); /* Adds a soft gallery shadow */
+}
+
+/* HIGH VISIBILITY TEXT */
+.test-text {
+    flex: 1; 
+}
+
+.test-text p {
+    font-weight: 600; /* Bolder than your ultra-thin body text */
+    font-size: 1rem; /* Larger, much easier to read */
+    line-height: 1.4; /* Tall spacing between lines */
+    color: #222;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+}
+
+/* Author Signature Styling */
+.test-text .test-author {
+    font-weight: 700; /* Maximum bold */
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: #111;
+    margin-top: 2rem;
+    border-top: 1px solid #ccc; /* A sleek line separating the quote from the name */
+    padding-top: 1rem;
+}
+
+/* Mobile Responsiveness: Stacks everything vertically on small screens */
+@media (max-width: 768px) {
+    .testimonial-row, 
+    .testimonial-row.reverse {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .test-img {
+        max-width: 100%;
+    }
+    .test-img img {
+        height: 400px; /* Slightly shorter box on mobile */
+    }
+}
+
+.center-btn {
+    text-align: center;
+}
+
+/* Footer */
+footer {
+    background: #111;
+    color: #fff;
+    padding: 4rem 5% 2rem 5%;
+    font-family: 'Roboto Condensed', sans-serif; /* Forces the font everywhere in the footer */
+}
+
+.footer-layout {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 3rem;
+}
+
+.footer-layout h3 {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+    color: #888;
+    font-weight: 700;
+}
+.footer-layout a {
+    display: block;
+    color: #ddd;
+    text-decoration: none;
+    margin-bottom: 0.8rem;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: 700; /* Keeps links thin and clean */
+     /* Optional: makes the footer links all-caps */
+}
+
+.footer-layout a:hover {
+    color: #fff;
+}
+
+.copyright {
+    text-align: center;
+    color: #666;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-top: 1px solid #333;
+    padding-top: 2rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .footer-layout {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
+    }
+}/* Multi-page content wrapper */
+.page-content {
+    min-height: 60vh; /* Pushes the footer down on short pages */
+    padding-bottom: 5rem;
+}
+/* Existing Logo Text Rules (Leave these alone in case an image breaks) */
+.logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* NEW: Add these rules for your image logo */
+.logo img {
+    max-height: 45px; /* Adjust this number to make your logo bigger or smaller */
+    width: auto;      /* Keeps the logo proportions correct */
+    display: block;
+}
+
+/* Apply the bolder version of Roboto Condensed to headings */
+h1, h2, h3, .logo {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700; /* Uses the bold version for impact */
+    text-transform: uppercase;
+}
+/* ========================================= */
+/* HERO TEXT LINKS                           */
+/* ========================================= */
+.hero-cat-link {
+    color: #222;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.hero-cat-link:hover {
+    color: #888; /* Changes to gray on hover */
+}
+
+/* ========================================= */
+/* DROPDOWN MENU                             */
+/* ========================================= */
+
+/* 1. Make the parent list item a positioning anchor */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* 2. Style the hidden dropdown box */
+.dropdown-content {
+    display: none; /* Hides it by default */
+    position: absolute;
+    background-color: #fafafa;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    z-index: 1000;
+    top: 100%; /* Pushes it directly underneath the word 'Gallery' */
+    left: 0;
+    border-radius: 4px;
+    padding: 0.5rem 0;
+}
+
+/* 3. Style the links inside the dropdown */
+.dropdown-content a {
+    color: #222;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.85rem;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: background-color 0.3s;
+}
+
+/* 4. Hover effect for the dropdown links */
+.dropdown-content a:hover {
+    background-color: #eaeaea;
+    color: #222;
+}
+
+/* 5. The magic: Show the dropdown content when hovering over the parent li */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+/* ========================================= */
+/* CLIENT ROSTER (Testimonials Bottom)       */
+/* ========================================= */
+
+.client-list-section {
+    margin-top: 6rem;
+    padding-top: 4rem;
+    border-top: 1px solid #eaeaea; /* A subtle divider line */
+    text-align: center;
+}
+
+.client-list-section h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #888; /* A muted grey so it sits quietly in the background */
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.client-list {
+    display: flex;
+    flex-wrap: wrap; /* Allows the list to naturally drop to a new line when it runs out of room */
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem 3rem; /* 1.5rem vertical gap, 3rem horizontal gap between names */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.client-list li {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    letter-spacing: 0.5px;
+}
+
+/* Mobile Responsiveness: Shrinks the gaps on smaller phone screens */
+@media (max-width: 768px) {
+    .client-list {
+        gap: 1rem 1.5rem; 
+    }
+    .client-list li {
+        font-size: 1rem;
+    }
+}
+/* ========================================= */
+/* GALLERY GRID & LIGHTBOX                   */
+/* ========================================= */
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 2rem; /* Spacing between images */
+    max-width: 1200px;
+    margin: 0 auto 5rem auto;
+    padding: 0 5%;
+}
+
+.gallery-item {
+    width: 100%;
+    aspect-ratio: 3 / 4; /* Locks every box to standard book cover/portrait proportions */
+    overflow: hidden;
+    position: relative;
+    background-color: #eee; /* Placeholder color while images load */
+}
+
+/* Image Locking and Protection */
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* THE MAGIC: Crops images perfectly to fit the box without squishing */
+    transition: transform 0.4s ease;
+    cursor: pointer;
+}
+
+.protected-img {
+    -webkit-user-drag: none; /* Stops users from clicking and dragging the image to their desktop */
+    user-select: none; /* Stops highlight selection */
+}
+
+/* Subtle zoom effect when hovering over the grid */
+.gallery-item:hover img {
+    transform: scale(1.05); 
+}
+
+/* --- LIGHTBOX OVERLAY --- */
+.lightbox {
+    display: none; /* Invisible by default */
+    position: fixed;
+    z-index: 9999; /* Stays on top of everything, including the header */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.95); /* Deep dark cinematic background */
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox.active {
+    display: flex;
+    opacity: 1;
+}
+
+.lightbox-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    object-fit: contain; /* Ensures the whole high-res image fits on the screen */
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: #fff;
+    font-size: 45px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.lightbox-close:hover {
+    color: #888;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+   .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 2rem; 
+    max-width: 1200px;
+    /* Changed the bottom margin from 5rem to 2rem so it sits closer to the text */
+    margin: 0 auto 2rem auto; 
+    padding: 0 5%;
+}
+    
+    .gallery-item img {
+        cursor: default; /* Removes the pointer finger on mobile */
+    }
+    
+    .gallery-item:hover img {
+        transform: none; /* Disables the hover zoom on touch screens */
+    }
+}
+/* ========================================= */
+/* ARTSTATION LINK                           */
+/* ========================================= */
+
+.artstation-link {
+    text-align: center;
+    /* Adds the larger space BELOW the text now, pushing the footer away */
+    margin-top: 1rem;
+    margin-bottom: 5rem; 
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 0.5px;
+}
+
+.artstation-link a {
+    color: #222;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px solid #222;
+    padding-bottom: 2px;
+    transition: all 0.3s ease;
+}
+
+.artstation-link a:hover {
+    color: #888;
+    border-bottom-color: #888;
+}
+/* Keeps the hamburger totally invisible on desktop screens */
+.hamburger {
+    display: none;
+}
+/* Keeps the flat gallery links hidden on desktop */
+.mobile-only {
+    display: none;
+}
+/* ========================================= */
+/* MOBILE RESPONSIVENESS (Phones & Tablets)  */
+/* ========================================= */
+
+/* Triggers on all tablets and large phones, both portrait and landscape */
+@media (max-width: 1024px) {
+    
+    /* 1. Center the Logo & Show Hamburger */
+    header {
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        padding-bottom: 1.5rem;
+    }
+    
+    .logo { margin: 0 auto; }
+    
+    .hamburger {
+        display: block;
+        position: absolute;
+        right: 5%;
+        top: 1.5rem; 
+        font-size: 2rem;
+        cursor: pointer;
+        color: #222;
+        z-index: 1001;
+    }
+
+    /* 2. The Burger Menu Dropdown */
+    nav ul {
+        display: none; /* Hides the standard horizontal row */
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fafafa;
+        box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+        padding: 1rem 0;
+        z-index: 1000;
+    }
+    
+    /* The class activated by our script */
+    nav ul.active {
+        display: flex; 
+    }
+    
+    nav ul > li {
+        margin: 1rem 0 !important;
+        text-align: center;
+    }
+
+    /* 3. Disable 3D Book Gimmick */
+    /* (If your book uses a different class name than .book, update it here!) */
+    .book, .book-container, .scene {
+        transform: none !important;
+        pointer-events: none !important;
+        transition: none !important;
+    }
+
+    /* 4. Text Fitting */
+    p, h1, h2, h3, h4 {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+    }
+
+    /* 5. Footer Fix (Forces 1 neat column) */
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 3rem;
+    }
+    
+    .footer-column ul {
+        grid-template-columns: 1fr !important; /* Stops the grid from breaking and looking infinite */
+        justify-items: center;
+    }
+    /* ========================================= */
+    /* NEW MOBILE FIXES                          */
+    /* ========================================= */
+
+    /* 1. Fix the "S" Mystery (Shrinks the massive MIZU.DRAWS title) */
+    /* 1. Fix the "S" Mystery & Clear the Header */
+    h1 {
+        font-size: 2.5rem !important; 
+        line-height: 1.2 !important;
+        letter-spacing: 2px !important;
+        text-align: center !important;
+        width: 100%;
+        margin-top: 4rem !important; /* THE FIX: A massive top margin to push it out from under the sticky header */
+    }
+
+    /* 2. Save "BY MIZU" (Pushes the black footer down) */
+    footer {
+        margin-top: 5rem !important; 
+    }
+
+    /* 3. Perfect Footer Centering (Kills the desktop grid math) */
+    /* 3. Perfect Footer Centering (Forces a single vertical column) */
+    .footer-column {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .footer-column h4 {
+        text-align: center !important;
+    }
+    
+    .footer-column ul {
+        display: flex !important; 
+        flex-direction: column !important; /* THE FIX: Added !important here to crush the inline HTML */
+        align-items: center !important;
+        gap: 1rem !important; 
+    }
+    /* ========================================= */
+    /* GALLERY MOBILE FIX                        */
+    /* ========================================= */
+
+    /* 4. Force Gallery to Stack 1-by-1 */
+    .gallery-grid {
+        grid-template-columns: 1fr !important; /* Forces the 3 columns to collapse into 1 */
+        gap: 2rem !important;
+        padding: 0 5% !important;
+    }
+
+    /* Disable the hover zoom effect on touch screens */
+    .gallery-item:hover img {
+        transform: none !important; 
+    }
+    /* ========================================= */
+    /* MOBILE MENU TOGGLE                        */
+    /* ========================================= */
+
+    /* 1. Hide the glitchy dropdown on touch screens */
+    .desktop-only {
+        display: none !important;
+    }
+
+    /* 2. Turn on the separated flat links */
+    .mobile-only {
+        display: block !important;
+    }
+}
